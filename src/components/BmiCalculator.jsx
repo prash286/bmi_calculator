@@ -2,29 +2,42 @@ import { Card, InputAdornment, Radio, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
 const idealHeightWeightData = [
-  { height: 137.16, weight: "28.5 - 34.9" },
-  { height: 139.7, weight: "30.8 - 37.6" },
-  { height: 142.24, weight: "32.6 – 39.9" },
-  { height: 144.78, weight: "34.9 – 42.6" },
-  { height: 147.32, weight: "36.4 – 44.9" },
-  { height: 149.86, weight: "39 – 47.6" },
-  { height: 152.4, weight: "40.8 – 49.9" },
-  { height: 154.94, weight: "43.1 – 52.6" },
-  { height: 157.48, weight: "44.9 – 54.9" },
-  { height: 160.02, weight: "47.2 – 57.6 " },
-  { height: 162.56, weight: "49 – 59.9" },
-  { height: 165.1, weight: "51.2 – 62.6" },
-  { height: 167.64, weight: "53 – 64.8 " },
-  { height: 170.18, weight: "55.3 – 67.6" },
-  { height: 172.72, weight: "57.1 – 69.8 " },
-  { height: 175.26, weight: "59.4 – 72.6" },
-  { height: 177.8, weight: "61.2 – 74.8" },
-  { height: 180.34, weight: "63.5 – 77.5" },
-  { height: 182.88, weight: "65.3 – 79.8" },
+  { height: 137, femaleWt: "28.5 - 34.9", maleWt: "28.5 - 34.9" },
+  { height: 140, femaleWt: "30.8 - 37.6", maleWt: "30.8 - 38.1" },
+  { height: 142, femaleWt: "32.6 - 39.9", maleWt: "33.5 - 40.8" },
+  { height: 145, femaleWt: "34.9 - 42.6", maleWt: "35.8 - 43.9" },
+  { height: 147, femaleWt: "36.4 - 44.9", maleWt: "38.5 - 46.7" },
+  { height: 150, femaleWt: "39 - 47.6", maleWt: "40.8 - 49.9" },
+  { height: 152, femaleWt: "40.8 - 49.9", maleWt: "43.1 - 53" },
+  { height: 155, femaleWt: "43.1 - 52.6", maleWt: "45.8 - 55.8" },
+  { height: 157, femaleWt: "44.9 - 54.9", maleWt: "48.1 - 58.9" },
+  { height: 160, femaleWt: "47.2 - 57.6", maleWt: "50.8 - 61.6" },
+  { height: 163, femaleWt: "49 - 59.9", maleWt: "53 - 64.8" },
+  { height: 165, femaleWt: "51.2 - 62.6", maleWt: "55.3 - 68" },
+  { height: 168, femaleWt: "53 - 64.8", maleWt: "58 - 70.7" },
+  { height: 170, femaleWt: "55.3 - 67.6", maleWt: "60.3 - 73.9" },
+  { height: 173, femaleWt: "57.1 - 69.8", maleWt: "63 - 76.6" },
+  { height: 175, femaleWt: "59.4 - 72.6", maleWt: "65.3 - 79.8" },
+  { height: 178, femaleWt: "61.2 - 74.8", maleWt: "67.6 - 83" },
+  { height: 180, femaleWt: "63.5 - 77.5", maleWt: "70.3 - 85.7" },
+  { height: 183, femaleWt: "65.3 - 79.8", maleWt: "72.6 - 88.9" },
+  { height: 185, femaleWt: "67.6 - 82.5", maleWt: "75.3 - 91.6" },
+  { height: 188, femaleWt: "69.4 - 84.8", maleWt: "77.5 - 94.8" },
+  { height: 191, femaleWt: "71.6 - 87.5", maleWt: "79.8 - 98" },
+  { height: 193, femaleWt: "73.5 - 89.8", maleWt: "82.5 - 100.6" },
+  { height: 195, femaleWt: "75.7 - 92.5", maleWt: "84.8 - 103.8" },
+  { height: 198, femaleWt: "77.5 - 94.8", maleWt: "87.5 - 106.5" },
+  { height: 201, femaleWt: "79.8 - 97.5", maleWt: "89.8 - 109.7" },
+  { height: 203, femaleWt: "81.6 - 99.8", maleWt: "92 - 112.9" },
+  { height: 205, femaleWt: "83.9 - 102.5", maleWt: "94.8 - 115.6" },
+  { height: 208, femaleWt: "85.7 - 104.8", maleWt: "97 - 118.8" },
+  { height: 210, femaleWt: "88 - 107.5", maleWt: "99.8 - 121.5" },
+  { height: 213, femaleWt: "89.8 - 109.7", maleWt: "102 - 124.7" },
 ];
 
 export default function BmiCalculator() {
   const [unit, setUnit] = useState("metric");
+  const [gender, setGender] = useState("male");
   const [calculatedBMI, setCalculatedBMI] = useState(0);
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
@@ -33,43 +46,61 @@ export default function BmiCalculator() {
   const [error, setError] = useState("");
   let bmiId = useRef();
 
-  const handleChange = (event) => {
-    setUnit(event.target.value);
+  const resetField = (event) => {
     setHeight("");
     setWeight("");
     setCalculatedBMI(0);
     setError("");
   };
 
-  function findWeightRange(height) {
+  function findWeightRange(height, gender) {
     for (let index = 0; index < idealHeightWeightData.length; index++) {
       if (index === idealHeightWeightData.length - 1) {
         return;
-      }
-      if (
+      } else if (height === idealHeightWeightData[index].height) {
+        switch (gender) {
+          case "male":
+            setIdealWeight(idealHeightWeightData[index].maleWt);
+            break;
+          case "female":
+            setIdealWeight(idealHeightWeightData[index].femaleWt);
+            break;
+          default:
+            break;
+        }
+      } else if (
         height >= idealHeightWeightData[index].height &&
         height < idealHeightWeightData[index + 1].height
       ) {
-        setIdealWeight(idealHeightWeightData[index].weight);
+        switch (gender) {
+          case "male":
+            setIdealWeight(idealHeightWeightData[index + 1].maleWt);
+            break;
+          case "female":
+            setIdealWeight(idealHeightWeightData[index + 1].femaleWt);
+            break;
+          default:
+            break;
+        }
       }
     }
   }
 
   useEffect(() => {
     if (height && weight) {
-      function calBMI(height, weight, unit) {
+      function calBMI(height, gender, weight, unit) {
         let bmi;
         switch (unit) {
           case "metric":
             const heightInMeter = height / 100;
             bmi = Number((weight / (heightInMeter * heightInMeter)).toFixed(1));
-            findWeightRange(height);
+            findWeightRange(height, gender);
             setCalculatedBMI(bmi);
             break;
           case "imperial":
             const heightInCm = height * 2.54;
             bmi = Number((703 * (weight / (height * height))).toFixed(1));
-            findWeightRange(heightInCm);
+            findWeightRange(heightInCm, gender);
             setCalculatedBMI(bmi);
             break;
           default:
@@ -86,18 +117,22 @@ export default function BmiCalculator() {
           setStatus("Obese");
         }
       }
-      bmiId.current = setTimeout(() => calBMI(height, weight, unit), 500);
+      bmiId.current = setTimeout(
+        () => calBMI(height, gender, weight, unit),
+        500
+      );
     } else if (!height && !weight) {
       setCalculatedBMI(0);
     }
     return () => clearTimeout(bmiId.current);
-  }, [height, weight, unit]);
+  }, [height, weight, unit, gender]);
 
   return (
     <Card
       variant="outlined"
       sx={{ borderRadius: "12px" }}
-      className="lg:absolute lg:right-[-15rem] lg:w-[450px] "
+      className="lg:absolute lg:right-[-15rem] lg:w-[450px]"
+      data-aos="fade-left"
     >
       <div className="p-5">
         <h3 className="text-lg font-bold leading-9">
@@ -106,14 +141,33 @@ export default function BmiCalculator() {
 
         <div className="flex flex-row gap-5 text-sm">
           <div>
-            <Radio
-              sx={{ paddingLeft: "0px" }}
-              checked={unit === "metric"}
-              onChange={handleChange}
-              value="metric"
-              name="radio-buttons"
-            />
-            <span className="text-md font-bold">Metric</span>
+            <div>
+              <Radio
+                sx={{ paddingLeft: "0px" }}
+                checked={unit === "metric"}
+                onChange={() => {
+                  setUnit("metric");
+                  resetField();
+                }}
+                value="metric"
+                name="radio-buttons"
+              />
+              <span className="text-md font-bold">Metric</span>
+            </div>
+            <div>
+              <Radio
+                sx={{ paddingLeft: "0px" }}
+                checked={gender === "male"}
+                onChange={() => {
+                  setGender("male");
+                  resetField();
+                }}
+                value="male"
+                name="radio-buttons"
+              />
+              <span className="text-md font-bold">Male</span>
+            </div>
+
             <div className="flex flex-col gap-2 mt-2">
               <span>Height</span>
               <TextField
@@ -145,12 +199,12 @@ export default function BmiCalculator() {
                     setError("");
                   } else if (
                     unit === "metric"
-                      ? height < 137 || height > 182
-                      : height < 53 || height > 71
+                      ? height < 137 || height > 213
+                      : height < 53 || height > 85
                   ) {
                     setError(
                       `Height must be between ${
-                        unit === "metric" ? "137-182 cm" : "53-71 inch"
+                        unit === "metric" ? "137 - 213 cm" : "53 - 85 inch"
                       }`
                     );
                   } else {
@@ -162,14 +216,32 @@ export default function BmiCalculator() {
             </div>
           </div>
           <div>
-            <Radio
-              sx={{ paddingLeft: "0px" }}
-              checked={unit === "imperial"}
-              onChange={handleChange}
-              value="imperial"
-              name="radio-buttons"
-            />
-            <span className="text-md font-bold">Imperial</span>
+            <div>
+              <Radio
+                sx={{ paddingLeft: "0px" }}
+                checked={unit === "imperial"}
+                onChange={() => {
+                  setUnit("imperial");
+                  resetField();
+                }}
+                value="imperial"
+                name="radio-buttons"
+              />
+              <span className="text-md font-bold">Imperial</span>
+            </div>
+            <div>
+              <Radio
+                sx={{ paddingLeft: "0px" }}
+                checked={gender === "female"}
+                onChange={() => {
+                  setGender("female");
+                  resetField();
+                }}
+                value="female"
+                name="radio-buttons"
+              />
+              <span className="text-md font-bold">Female</span>
+            </div>
             <div className="flex flex-col gap-2 mt-2">
               <span>Weight</span>
               <TextField
@@ -218,7 +290,7 @@ export default function BmiCalculator() {
             <div className="flex items-center justify-center text-[0.8rem] ">
               <span>
                 Your BMI suggests you're {status} weight. Your ideal weight is
-                between <b>{idealWeight}</b>
+                between <b>{idealWeight} kg</b>
               </span>
             </div>
           </div>

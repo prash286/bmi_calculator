@@ -14,7 +14,11 @@ export default function Main() {
       <header className="mb-[10vw] lg:mb-0 h-[100vh] pb-[8vh] lg:pr-[30vw] relative">
         <div className="h-[100%] bg-gradient-to-l from-[#5899e26e] to-[#ffffff] rounded-br-3xl pt-[8vh] pl-[8vw] lg:after:content-[''] lg:after:w-[80px] lg:after:h-[80px] lg:after:absolute lg:after:rounded-br-full lg:after:border-r-2 lg: after:border-[lightgray] lg:after:border-b-2 lg:after:bottom-[10px] lg:after:right-[200px]">
           <div className="flex justify-center  lg:justify-normal">
-            <img src="logo.png" alt="logo" className="mix-blend-darken" />
+            <img
+              src="logo.png"
+              alt="logo"
+              className="mix-blend-darken animate-pulse"
+            />
           </div>
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] lg:mt-14 relative gap-6 pr-[4vw] lg:pr-0">
             <div className="pt-8 sm:flex lg:block sm:flex-col">
@@ -34,10 +38,15 @@ export default function Main() {
         </div>
       </header>
       <section className="p-[6vh_8vw] pl-[4vw]  lg:pt-0">
-        <aside className="md:grid grid-cols-[0.9fr_1fr] gap-8 mb-8 ">
+        <aside className="md:grid grid-cols-[0.9fr_1fr] gap-8 mb-8">
           <div className="flex justify-center p-5 pl-[3rem] sm:pl-0 relative mt-8">
             <span className="block w-[400px] h-[calc(100%_-_140px)] absolute bg-[#3bcbcb30] bottom-0 -z-[1] rounded-[50px]" />
-            <img src="health.png" alt="bmi" className="w-[350px]" />
+            <img
+              src="health.png"
+              alt="bmi"
+              className="w-[350px]"
+              data-aos="fade-up"
+            />
           </div>
           <div className="flex flex-col justify-center p-5 pt-[12vh] pr-[4vw]">
             <span className="mb-5 text-[1.8rem] font-bold leading-9">
@@ -59,6 +68,7 @@ export default function Main() {
             title="Healthy eating"
             description="Healthy eating promotes weight control, disease prevention, better
               digestion, immunity, mental clarity, and mood."
+            fadeDirection="fade-right"
           >
             <span className="block w-fit [clip-path:circle()] bg-[#fddced] p-2.5 ">
               <PiBowlFoodLight className="text-2xl text-[#c53e7b]" />
@@ -75,6 +85,7 @@ export default function Main() {
           <HealthGuideCard
             title="Adequate sleep"
             description="Sleep enhances mental clarity, emotional stability, and physical wellness, promoting overall restoration and rejuvenation."
+            fadeDirection="fade-left"
           >
             <span className="block w-fit [clip-path:circle()] bg-[#d4f6f6] p-2.5 ">
               <BsMoonStars className="text-2xl text-[#46b1ab]" />
@@ -103,7 +114,7 @@ export default function Main() {
             evaluating their BMI."
           />
         </div>
-        <div className="md:flex justify-end md:pr-24 ">
+        <div className="md:flex justify-end md:pr-24" data-aos="fade-left">
           <div className="lg:before:content-[''] lg:before:w-[70px] lg:before:h-[80px] lg:before:border-l-2 lg:before:border-b-2 lg:before:border-[lightgray] lg:before:absolute lg:before:left-[calc(100%_-_60rem)] lg:before:top-[30%] lg:before:rounded-bl-[150px]">
             <BasicInfoCard
               icon={<PiCakeBold className="text-[#51aca3] text-2xl" />}
@@ -117,7 +128,7 @@ export default function Main() {
             info="BMI may misclassify muscular individuals as overweight or obese, as it doesn't differentiate muscle from fat."
           />
         </div>
-        <div className="md:flex justify-center">
+        <div className="md:flex justify-center" data-aos="fade-right">
           <BasicInfoCard
             icon={<MdPregnantWoman className="text-[#d9b93a] text-2xl" />}
             title="Pregnancy"
